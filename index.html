@@ -253,9 +253,9 @@
     </div>
 
     <script>
-        // 🔐 Security Update: Prompts the user for API key so it is never saved publicly on GitHub
+        // 🔐 Security & Model Update: Prompts for the API key and uses the modern gemini-1.5-flash model
         const API_KEY = prompt("Please enter your Gemini API Key to use Nano AI:");
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
         const messagesBox = document.getElementById('messagesBox');
         const welcomeScreen = document.getElementById('welcomeScreen');
@@ -287,6 +287,7 @@
             messagesBox.scrollTop = messagesBox.scrollHeight;
 
             try {
+                // Fetch request updated for Gemini 1.5 structures
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
@@ -300,6 +301,7 @@
                 const data = await response.json();
                 document.getElementById(loadingId).remove();
 
+                // Reading content from Gemini API JSON response
                 if (data.candidates && data.candidates[0].content.parts[0].text) {
                     const aiResponse = data.candidates[0].content.parts[0].text;
                     appendMessage('N', aiResponse, 'ai-message');
